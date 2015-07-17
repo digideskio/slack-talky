@@ -12,7 +12,7 @@ const slackToken = process.env.SLACK_TOKEN
 const url = process.env.INCOMING_WEBHOOK_URL
 
 const handleError = res => err => {
-  console.log(err)
+  console.error(err.stack || err)
   res.writeHead(500, { 'Content-Type': 'text/plain' })
   res.end(err.message || err)
 }
