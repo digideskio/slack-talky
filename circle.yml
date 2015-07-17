@@ -2,7 +2,7 @@ deployment:
   production:
     branch: master
     heroku:
-      appname: slack-edgar-facts
+      appname: lanetix-slack-talky
 
 machine:
   node:
