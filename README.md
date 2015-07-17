@@ -1,4 +1,4 @@
-slack-edgar-facts
+slack-talky
 =================
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 [![Circle CI](https://circleci.com/gh/lanetix/slack-talky.svg?style=svg)](https://circleci.com/gh/lanetix/slack-talky)
