@@ -23,8 +23,8 @@ export default createServer((req, res) => {
   req.pipe(concat(body => {
     const parsed = queryStringParse(body.toString())
     const token = parsed.token
-    const session = parsed.text.trim() ||
-      `${randomWord()}-${randomWord()}-${randomWord()}`
+    const session = (parsed.text && parsed.text.trim()) ||
+        `${randomWord()}-${randomWord()}-${randomWord()}`
     const channel = `#${parsed.channel_name}`
 
     if (token !== slackToken) {
