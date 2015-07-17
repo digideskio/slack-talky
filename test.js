@@ -13,9 +13,9 @@ let server
 test('setup', t => {
   t.plan(2)
 
-  process.env.TOKENS_URLS = `{
-    "${TOKEN}":"https://hooks.slack.com/services/${WEBHOOK_URL_FRAG}"
-  }`
+  process.env.SLACK_TOKEN = TOKEN
+  process.env.INCOMING_WEBHOOK_URL =
+    `https://hooks.slack.com:443/services/${WEBHOOK_URL_FRAG}`
   server = require('./server')
   server.listen(0, err => {
     t.error(err)
@@ -31,7 +31,10 @@ test('should send to slack channel', t => {
       `/services/${WEBHOOK_URL_FRAG}`,
       body => {
         t.equal(body.channel, '#robots')
-        t.ok(body.text)
+        t.ok(
+          body.text.match(/https:\/\/talky.io\/[a-z]+-[a-z]+-[a-z]+/),
+          'should be talky url'
+        )
         return true
       }
     )
@@ -48,7 +51,37 @@ test('should send to slack channel', t => {
     }
   )
 
-  req.write(`token=${TOKEN}&channel_name=robots`)
+  req.write(`token=${TOKEN}&channel_name=robots&text=`)
+  req.end()
+
+})
+
+test('should send to slack channel with specified session', t => {
+  t.plan(3)
+
+  nock('https://hooks.slack.com:443')
+    .post(
+      `/services/${WEBHOOK_URL_FRAG}`,
+      body => {
+        t.equal(body.channel, '#robots')
+        t.equal(body.text, 'made you a talky! <https://talky.io/cats>')
+        return true
+      }
+    )
+    .reply(200, 'ok')
+  nock.enableNetConnect(`localhost:${port}`)
+
+  const req = request(
+    {
+      method: 'POST',
+      port: port
+    },
+    res => {
+      t.equal(res.statusCode, 200)
+    }
+  )
+
+  req.write(`token=${TOKEN}&channel_name=robots&text=cats`)
   req.end()
 
 })

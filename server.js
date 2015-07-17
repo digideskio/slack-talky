@@ -1,16 +1,18 @@
 'use strict'
 
 import concat from 'concat-stream'
-import edgarFacts from 'edgar-facts'
 import { createServer } from 'http'
 import { request } from 'https'
 import { parse as queryStringParse } from 'querystring'
 import { parse as urlParse } from 'url'
+import randomWord from 'random-word'
 import xtend from 'xtend'
 
-const tokensToUrl = JSON.parse(process.env.TOKENS_URLS)
+const slackToken = process.env.SLACK_TOKEN
+const url = process.env.INCOMING_WEBHOOK_URL
 
 const handleError = res => err => {
+  console.log(err)
   res.writeHead(500, { 'Content-Type': 'text/plain' })
   res.end(err.message || err)
 }
@@ -21,8 +23,13 @@ export default createServer((req, res) => {
   req.pipe(concat(body => {
     const parsed = queryStringParse(body.toString())
     const token = parsed.token
+    const session = parsed.text.trim() ||
+      `${randomWord()}-${randomWord()}-${randomWord()}`
     const channel = `#${parsed.channel_name}`
-    const url = tokensToUrl[token]
+
+    if (token !== slackToken) {
+      return errorHandler(`Unknown token ${token}`)
+    }
 
     const slackReq = request(
       xtend(urlParse(url), { method: 'POST' }),
@@ -34,7 +41,10 @@ export default createServer((req, res) => {
 
     slackReq.on('error', errorHandler)
 
-    slackReq.write(JSON.stringify({ channel: channel, text: edgarFacts() }))
+    slackReq.write(JSON.stringify({
+      channel: channel,
+      text: `made you a talky! <https://talky.io/${session}>`
+    }))
     slackReq.end()
   }))
 

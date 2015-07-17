@@ -1,7 +1,7 @@
 {
-  "name": "slack-edgar-facts",
+  "name": "slack-talky",
   "version": "1.0.0",
-  "description": "Slack Slash command for facts about @apechimp's :dog:, Edgar",
+  "description": "Slack Slash command for creating a talky.io session",
   "main": "index.js",
   "engines": {
     "iojs": "^2",
@@ -13,24 +13,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apechimp/slack-edgar-facts.git"
+    "url": "git+https://github.com/lanetix/slack-talky.git"
   },
   "keywords": [
     "slack",
-    "edgar",
-    "dog",
-    "facts"
+    "talky"
   ],
   "author": "Mike Atkins",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/apechimp/slack-edgar-facts/issues"
+    "url": "https://github.com/lanetix/slack-talky/issues"
   },
-  "homepage": "https://github.com/apechimp/slack-edgar-facts#readme",
+  "homepage": "https://github.com/lanetix/slack-talky#readme",
   "dependencies": {
     "babel": "^5.6.4",
     "concat-stream": "^1.5.0",
-    "edgar-facts": "^1.0.4",
+    "random-word": "^1.0.2",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
