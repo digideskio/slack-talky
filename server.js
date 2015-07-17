@@ -28,7 +28,8 @@ export default createServer((req, res) => {
     const channel = `#${parsed.channel_name}`
 
     if (token !== slackToken) {
-      return errorHandler(`Unknown token ${token}`)
+      res.writeHead(404, { 'Content-Type': 'text/plain' })
+      res.end(`Unknown token ${token}`)
     }
 
     const slackReq = request(

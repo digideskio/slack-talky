@@ -23,7 +23,25 @@ test('setup', t => {
   })
 })
 
-test('should send to slack channel', t => {
+test('should 404 on invalid token', t => {
+  t.plan(1)
+
+  const req = request(
+    {
+      method: 'POST',
+      port: port
+    },
+    res => {
+      t.equal(res.statusCode, 404)
+    }
+  )
+
+  req.write(`token=catbug&channel_name=robots&text=`)
+  req.end()
+
+})
+
+test('should send to slack channel with specified session', t => {
   t.plan(3)
 
   nock('https://hooks.slack.com:443')
@@ -31,10 +49,7 @@ test('should send to slack channel', t => {
       `/services/${WEBHOOK_URL_FRAG}`,
       body => {
         t.equal(body.channel, '#robots')
-        t.ok(
-          body.text.match(/https:\/\/talky.io\/[a-z]+-[a-z]+-[a-z]+/),
-          'should be talky url'
-        )
+        t.equal(body.text, 'made you a talky! <https://talky.io/cats>')
         return true
       }
     )
@@ -51,7 +66,7 @@ test('should send to slack channel', t => {
     }
   )
 
-  req.write(`token=${TOKEN}&channel_name=robots&text=`)
+  req.write(`token=${TOKEN}&channel_name=robots&text=cats`)
   req.end()
 
 })
