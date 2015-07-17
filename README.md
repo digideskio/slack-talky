@@ -1,9 +1,9 @@
 slack-edgar-facts
 =================
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
-[![Circle CI](https://circleci.com/gh/apechimp/slack-edgar-facts.svg?style=svg)](https://circleci.com/gh/apechimp/slack-edgar-facts)
+[![Circle CI](https://circleci.com/gh/lanetix/slack-talky.svg?style=svg)](https://circleci.com/gh/lanetix/slack-talky)
 
-Slack Slash command for facts about @apechimp's :dog:, Edgar.
+Slack Slash command for generating a talky.io session
 
 Installation
 ------------
@@ -14,8 +14,7 @@ Installation
 Usage
 -----
 
-1. Export a json hash of slack slash command tokens to slack incoming webhook urls to `TOKENS_URLS`, e.g.,
-```bash
-export TOKENS_URLS='{"gIkuvaNzQIHg97ATvDxqgjtO":"https://hooks.slack.com/services/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"}'
-```
+1. Set the following environment variables
+  - `SLACK_TOKEN` token for your slash command
+  - `INCOMING_WEBHOOK_URL` url for your incoming webhook
 2. `npm start`
